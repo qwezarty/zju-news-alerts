@@ -36,7 +36,7 @@ class GRS:
         raw_date = helpers.xpath_text(item, '//li/span[@class="art-date"]')
         cooked_date = parse(raw_date)
         url = 'http://grs.zju.edu.cn/' + helpers.xpath_text(item, '//li/a', 'href')
-        return {'type': type, 'title': title, 'date': cooked_date, 'url': url}
+        return {'id': str(uuid.uuid1()), 'type': type, 'title': title, 'date': cooked_date, 'url': url}
 
     def analyze_detail(self, html):
         title = helpers.xpath_text(html, '//h2[@class="art-heading"]')
