@@ -15,15 +15,15 @@ from email.message import EmailMessage
 from email.mime.text import MIMEText
 
 class Mail:
-    def __init__(self, news):
-        self.news = news
+    def __init__(self, post):
+        self.post = post
 
     def send(self):
         content = ''
-        with open(self.news["path"], 'r') as f:
+        with open(self.post["path"], 'r') as f:
             content = f.read()
         msg = MIMEText(content, 'html')
-        msg["Subject"] = self.news["title"]
+        msg["Subject"] = self.post["title"]
         msg["From"] = "zju.news.alerts@outlook.com"
         msg["To"] = "qwezarty@163.com"
         msg["Content-type"] = "text/html"

@@ -16,34 +16,34 @@ class Engine:
     def __init__(self, addr='localhost', port=27017):
         # setting up mongo collections
         db = MongoClient(addr, port)["zna"]
-        self.news = db.news
+        self.posts = db.posts
         self.sources = db.sources
         # time filter
         self.start = datetime.now()
         # inserting sources to db
         self._init_sources()
 
-    def save_news(self, news):
-        news = self._filter_news(self, news)
+    def save_posts(self, posts):
+        posts = self._filter_posts(self, posts)
         # todo error handling, query before return
-        rets = self.news.insert_many(news)
-        return news
+        rets = self.posts.insert_many(posts)
+        return posts
 
-    def with_more_infos(self, new):
-        source = self.sources.find_one({"_id": new["source"]})
+    def with_more_infos(self, post):
+        source = self.sources.find_one({"_id": post["source"]})
         if source:
-            new["source"] = source
-        return new
+            post["source"] = source
+        return post
 
-    def _filter_news(self, news):
+    def _filter_posts(self, posts):
         rets = []
-        for new in news:
-            if new["date"] < self.start:
+        for post in posts:
+            if post["date"] < self.start:
                 continue
-            ret = self.news.find_one(new)
+            ret = self.posts.find_one(post)
             if ret:
                 continue
-            rets.append(new)
+            rets.append(post)
         return rets
 
     def _init_sources(self):

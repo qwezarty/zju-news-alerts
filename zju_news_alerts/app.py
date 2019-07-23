@@ -32,14 +32,14 @@ class App:
 
     def serve(self):
         for source in self.sources:
-            raw_news = source.list()
-            cooked_news = self.engine.save_news(raw_news)
-            for new in cooked_news:
-                cooked_new = self.engine.with_more_infos(new)
-                Mail(cooked_new).send()
+            raw_posts = source.list()
+            cooked_posts = self.engine.save_posts(raw_posts)
+            for post in cooked_posts:
+                cooked_post = self.engine.with_more_infos(post)
+                Mail(cooked_post).send()
         print("worker list complete, next will be 60s")
         time.sleep(60)
 
     def send(self):
-        news = self.source.get()
-        Mail(news).send()
+        post = self.source.get()
+        Mail(post).send()

@@ -57,7 +57,7 @@ def _init_subparsers(parent):
     # get
     parser_get = subparsers.add_parser(
         'get',
-        help = 'get the latest news of source'
+        help = 'get the latest post of source'
     )
     parser_get.set_defaults(func=get)
     parser_get.add_argument(
@@ -67,7 +67,7 @@ def _init_subparsers(parent):
     # mail
     parser_mail = subparsers.add_parser(
         'mail',
-        help = 'get the latest news of source'
+        help = 'get the latest post of source'
     )
     parser_mail.set_defaults(func=mail)
     parser_mail.add_argument(

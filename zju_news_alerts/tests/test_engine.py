@@ -28,16 +28,16 @@ mocks = [
 engine = Engine()
 engine.start = parse("2019-03-01")
 
-def test_filter_news():
-    rets = engine._filter_news(mocks)
-    assert len(rets) == 2, 'start date not working when filter news'
-    engine.news.insert_one(mocks[1])
-    rets = engine._filter_news(mocks)
-    assert len(rets) == 1, 'cannot filter replica date in db when filter news'
-    engine.news.delete_one(mocks[1])
+def test_filter_posts():
+    rets = engine._filter_posts(mocks)
+    assert len(rets) == 2, 'start date not working when filter posts'
+    engine.posts.insert_one(mocks[1])
+    rets = engine._filter_posts(mocks)
+    assert len(rets) == 1, 'cannot filter replica date in db when filter posts'
+    engine.posts.delete_one(mocks[1])
 
 def test_with_more_infos():
-    cooked_new = engine.with_more_infos(mocks[1])
-    assert cooked_new["source"]["_id"]
-    assert cooked_new["source"]["description"]
+    cooked_post = engine.with_more_infos(mocks[1])
+    assert cooked_post["source"]["_id"]
+    assert cooked_post["source"]["description"]
 
