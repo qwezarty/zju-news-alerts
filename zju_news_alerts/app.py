@@ -10,7 +10,9 @@
 """
 
 import time
+from pymongo import MongoClient
 from zju_news_alerts.request import Request
+from zju_news_alerts.engine import Engine
 from zju_news_alerts.mail import Mail
 
 class App:
@@ -18,17 +20,24 @@ class App:
 
     def __init__(self, import_name):
         self.import_name = import_name
-        self.sources = [Request("physics")]
+        self.engine = Engine()
+        self.sources = [
+            Request("physics"),
+            Request("grs")
+        ]
 
     def source(self, name):
         self.source = Request(name)
         return self.source
 
     def serve(self):
-        print("starting all worker")
         for source in self.sources:
-            source.get()
-            print("worker list complete, next will be 60s")
+            raw_news = source.list()
+            cooked_news = self.engine.save_news(raw_news)
+            for new in cooked_news:
+                cooked_new = self.engine.with_more_infos(new)
+                Mail(cooked_new).send()
+        print("worker list complete, next will be 60s")
         time.sleep(60)
 
     def send(self):
