@@ -9,7 +9,6 @@
     :email: qwezarty@gmail.com
 """
 
-import uuid
 import io
 from zju_news_alerts import helpers
 from lxml import etree
@@ -17,8 +16,9 @@ from dateutil.parser import parse
 from datetime import datetime
 
 class GRS:
-    def __init__(self, base_url=''):
+    def __init__(self, source_name='', base_url=''):
         self.base_url = base_url or 'http://grs.zju.edu.cn/'
+        self.source_name = source_name or 'grs'
         self.encoding = 'utf-8'
 
     def analyze_list(self, html):
@@ -36,7 +36,7 @@ class GRS:
         raw_date = helpers.xpath_text(item, '//li/span[@class="art-date"]')
         cooked_date = parse(raw_date)
         url = 'http://grs.zju.edu.cn/' + helpers.xpath_text(item, '//li/a', 'href')
-        return {'id': str(uuid.uuid1()), 'type': type, 'title': title, 'date': cooked_date, 'url': url}
+        return {'source': self.source_name, 'type': type, 'title': title, 'date': cooked_date, 'url': url}
 
     def analyze_detail(self, html):
         title = helpers.xpath_text(html, '//h2[@class="art-heading"]')

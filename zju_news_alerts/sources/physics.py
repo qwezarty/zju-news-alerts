@@ -9,15 +9,15 @@
     :email: qwezarty@gmail.com
 """
 
-import uuid
 import io
 from zju_news_alerts import helpers
 from lxml import etree
 from dateutil.parser import parse
 
 class Physics:
-    def __init__(self, base_url=''):
+    def __init__(self, source_name='', base_url=''):
         self.base_url = base_url or 'http://physics.zju.edu.cn/chinese/redir.php'
+        self.source_name = source_name or 'physics'
         self.encoding = 'gb2312'
 
     def analyze_list(self, html):
@@ -33,7 +33,7 @@ class Physics:
         raw_date = helpers.xpath_text(item, '//span')
         cooked_date = parse(raw_date)
         url = 'http://physics.zju.edu.cn/chinese/' + helpers.xpath_text(item, '//a', 'href')
-        return {'id': str(uuid.uuid1()), 'title': title, 'date': cooked_date, 'url': url}
+        return {'source': self.source_name, 'title': title, 'date': cooked_date, 'url': url}
 
     def analyze_detail(self, html):
         title = helpers.xpath_text(html, '//h2[@class="art-heading"]')
