@@ -31,6 +31,8 @@ class Engine:
         return posts
 
     def with_more_infos(self, post):
+        if not post:
+            return []
         source = self.sources.find_one({"_id": post["source"]})
         if source:
             post["source"] = source
@@ -38,6 +40,8 @@ class Engine:
 
     def _filter_posts(self, posts):
         rets = []
+        if not posts:
+            return rets
         for post in posts:
             if post["date"] < self.start:
                 continue

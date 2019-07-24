@@ -29,6 +29,12 @@ engine = Engine()
 engine.start = parse("2019-03-01")
 
 def test_filter_posts():
+    # boundary value
+    rets = engine._filter_posts([])
+    assert len(rets) == 0
+    rets = engine._filter_posts(None)
+    assert len(rets) == 0
+    # normal value
     rets = engine._filter_posts(mocks)
     assert len(rets) == 2, 'start date not working when filter posts'
     engine.posts.insert_one(mocks[1])
@@ -37,6 +43,12 @@ def test_filter_posts():
     engine.posts.delete_one(mocks[1])
 
 def test_with_more_infos():
+    # boundary value
+    rets = engine.with_more_infos([])
+    assert len(rets) == 0
+    rets = engine.with_more_infos(None)
+    assert len(rets) == 0
+    # normal value
     cooked_post = engine.with_more_infos(mocks[1])
     assert cooked_post["source"]["_id"]
     assert cooked_post["source"]["description"]

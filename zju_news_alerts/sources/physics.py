@@ -29,14 +29,14 @@ class Physics:
 
     def _analyze_list_item(self, item):
         item = etree.HTML(etree.tostring(item))
-        title = helpers.xpath_text(item, '//a', 'title')
-        raw_date = helpers.xpath_text(item, '//span')
+        title = helpers.xpath(item, '//a', 'title')
+        raw_date = helpers.xpath(item, '//span')
         cooked_date = parse(raw_date)
-        url = 'http://physics.zju.edu.cn/chinese/' + helpers.xpath_text(item, '//a', 'href')
+        url = 'http://physics.zju.edu.cn/chinese/' + helpers.xpath(item, '//a', 'href')
         return {'source': self.source_name, 'title': title, 'date': cooked_date, 'url': url}
 
     def analyze_detail(self, html):
-        title = helpers.xpath_text(html, '//h2[@class="art-heading"]')
+        title = helpers.xpath(html, '//h2[@class="art-heading"]')
         content_element = html.xpath('//div[contains(@class, "art-content")]')
         assert len(content_element) == 1, 'news content should only have one'
         abs_path = helpers.cache_element(content_element[0], title)

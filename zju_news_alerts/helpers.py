@@ -45,7 +45,7 @@ def cache_element(element, file_name='last_artical.html'):
     tree.write(abs_path)
     return abs_path
 
-def xpath_text(html, xpath, attr=''):
+def xpath(html, xpath, attr=''):
     """use xpath to get element's attribute from html"""
     """by default, it gets the text of node"""
     nodes = html.xpath(xpath)

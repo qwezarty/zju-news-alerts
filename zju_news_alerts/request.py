@@ -30,6 +30,8 @@ class Request:
         elif source_name == 'grs':
             self.source_name = 'grs'
             return GRS()
+        else:
+            raise Exception("no source matched: %s" % source_name)
 
     def _source_func(self, source):
         if (not hasattr(source, 'analyze_list') or
@@ -53,6 +55,8 @@ class Request:
         params = self.source.get_list_qs()
         print("url: %s" % url)
         res = self.session.get(url=url, headers=self.headers, params=params)
+        if not res:
+            raise Exception("request list gives none response, source: %s" % self.source_name)
         res.encoding = self.source.encoding
         helpers.cache_response(response=res, encoding=self.source.encoding)
         text = res.text.encode(res.encoding).decode(self.source.encoding)
@@ -65,11 +69,11 @@ class Request:
         latest = self.list()[0]
         params = self.source.get_info_qs()
         res = self.session.get(url=latest["url"], headers=self.headers, params=params)
+        if not res:
+            raise Exception("request detail gives none response, source: %s" % self.source_name)
         res.encoding = self.source.encoding
         helpers.cache_response(response=res, encoding=self.source.encoding)
         text = res.text.encode(res.encoding).decode(self.source.encoding)
         html = etree.HTML(text)
         return self.source.analyze_detail(html)
 
-    def latest(self):
-        pass

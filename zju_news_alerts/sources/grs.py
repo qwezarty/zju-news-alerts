@@ -31,16 +31,16 @@ class GRS:
 
     def _analyze_list_item(self, item):
         item = etree.HTML(etree.tostring(item))
-        title = helpers.xpath_text(item, '//li/a', 'title')
-        type = helpers.xpath_text(item, '//li/span//a')
-        raw_date = helpers.xpath_text(item, '//li/span[@class="art-date"]')
+        title = helpers.xpath(item, '//li/a', 'title')
+        type = helpers.xpath(item, '//li/span//a')
+        raw_date = helpers.xpath(item, '//li/span[@class="art-date"]')
         cooked_date = parse(raw_date)
-        url = 'http://grs.zju.edu.cn/' + helpers.xpath_text(item, '//li/a', 'href')
+        url = 'http://grs.zju.edu.cn/' + helpers.xpath(item, '//li/a', 'href')
         return {'source': self.source_name, 'type': type, 'title': title, 'date': cooked_date, 'url': url}
 
     def analyze_detail(self, html):
-        title = helpers.xpath_text(html, '//h2[@class="art-heading"]')
-        raw_date = helpers.xpath_text(html, '//div[@class="art-summary"]/text()').replace(' ', '')
+        title = helpers.xpath(html, '//h2[@class="art-heading"]')
+        raw_date = helpers.xpath(html, '//div[@class="art-summary"]/text()').replace(' ', '')
         cooked_date = datetime.strptime(raw_date, '%Y年%m月%d日%H:%M')
         content_element = html.xpath('//div[contains(@class, "art-content")]')
         assert len(content_element) == 1, 'news content should only have one'
