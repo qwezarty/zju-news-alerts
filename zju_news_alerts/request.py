@@ -26,7 +26,7 @@ class Request:
     def _get_source(self, source_name):
         if source_name == 'physics':
             self.source_name = 'physics'
-            return Physics('http://physics.zju.edu.cn/chinese/redir.php?catalog_id=12267')
+            return Physics(base_url='http://physics.zju.edu.cn/chinese/redir.php?catalog_id=12267')
         elif source_name == 'grs':
             self.source_name = 'grs'
             return GRS()
@@ -51,6 +51,7 @@ class Request:
     def list(self):
         url = self.source.get_list_url()
         params = self.source.get_list_qs()
+        print("url: %s" % url)
         res = self.session.get(url=url, headers=self.headers, params=params)
         res.encoding = self.source.encoding
         helpers.cache_response(response=res, encoding=self.source.encoding)
