@@ -40,5 +40,5 @@ class Physics:
         content_element = html.xpath('//div[contains(@class, "art-content")]')
         assert len(content_element) == 1, 'news content should only have one'
         abs_path = helpers.cache_element(content_element[0], title)
-        return {'title': title, 'path': abs_path}
+        return {'source': self.source_name, 'title': title, 'path': abs_path}
 
