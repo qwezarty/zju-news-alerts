@@ -25,7 +25,8 @@ class Mail:
         msg = MIMEText(content, 'html')
         msg["Subject"] = self.post["title"]
         msg["From"] = "zju.news.alerts@outlook.com"
-        msg["To"] = "qwezarty@163.com"
+        # msg["To"] = "qwezarty@163.com"
+        msg["Bcc"] = ", ".join(self.post["source"]["subscribers"])
         msg["Content-type"] = "text/html"
         # add html content
         with smtplib.SMTP('smtp.office365.com', 587) as s:
