@@ -42,4 +42,5 @@ class App:
 
     def send(self):
         post = self.source.get()
-        Mail(post).send()
+        cooked_post = self.engine.with_more_infos(post)
+        Mail(cooked_post).send()
