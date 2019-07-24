@@ -48,11 +48,20 @@ class Engine:
 
     def _init_sources(self):
         sources = [
-            {"_id": "physics", "description": "zju, department of physics", "subscribers": ["qwezarty@163.com"]},
-            {"_id": "grs", "description": "zju, postgraduate research institute", "subscribers": ["qwezarty@163.com"]}
+            {
+                "_id": "physics",
+                "description": "zju, department of physics",
+                "subscribers": ["qwezarty@163.com"]
+            },
+            {
+                "_id": "grs",
+                "description": "zju, postgraduate research institute",
+                "subscribers": ["qwezarty@163.com", "qwezarty@gmail.com"]
+            }
         ]
         for source in sources:
-            if self.sources.find_one(source):
-                continue
-            self.sources.insert_one(source)
+            if self.sources.find_one({"_id": source["_id"]}):
+                self.sources.update_one({"_id": source["_id"]}, {"$set": source})
+            else:
+                self.sources.insert_one(source)
 
