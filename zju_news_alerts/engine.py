@@ -24,9 +24,10 @@ class Engine:
         self._init_sources()
 
     def save_posts(self, posts):
-        posts = self._filter_posts(self, posts)
-        # todo error handling, query before return
-        rets = self.posts.insert_many(posts)
+        posts = self._filter_posts(posts)
+        if len(posts) > 0:
+            # todo error handling, query before return
+            rets = self.posts.insert_many(posts)
         return posts
 
     def with_more_infos(self, post):
