@@ -53,7 +53,6 @@ class Request:
     def list(self):
         url = self.source.get_list_url()
         params = self.source.get_list_qs()
-        print("url: %s" % url)
         res = self.session.get(url=url, headers=self.headers, params=params)
         if not res:
             raise Exception("request list gives none response, source: %s" % self.source_name)

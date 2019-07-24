@@ -9,6 +9,7 @@
     :email: qwezarty@gmail.com
 """
 
+from dateutil.parser import parse
 from datetime import datetime
 from pymongo import MongoClient
 
@@ -19,12 +20,13 @@ class Engine:
         self.posts = db.posts
         self.sources = db.sources
         # time filter
-        self.start = datetime.now()
+        self.start = parse("2018-01-01")
         # inserting sources to db
         self._init_sources()
 
-    def save_posts(self, posts):
-        posts = self._filter_posts(posts)
+    def save_posts(self, posts, filter=True):
+        if filter:
+            posts = self._filter_posts(posts)
         if len(posts) > 0:
             # todo error handling, query before return
             rets = self.posts.insert_many(posts)

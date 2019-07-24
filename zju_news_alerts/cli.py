@@ -44,6 +44,12 @@ def _init_subparsers(parent):
         help = 'starting server.'
     )
     parser_serve.set_defaults(func=serve)
+    # warmup
+    parser_warmup = subparsers.add_parser(
+        'warmup',
+        help = 'warmup engine..'
+    )
+    parser_warmup.set_defaults(func=warmup)
     # list
     parser_list = subparsers.add_parser(
         'list',
@@ -79,6 +85,9 @@ app = App(__name__)
 
 def serve(args):
     app.serve()
+
+def warmup(args):
+    app.warmup()
 
 def list(args):
     rets = app.source(args.source).list()

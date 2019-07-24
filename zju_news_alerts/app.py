@@ -30,25 +30,32 @@ class App:
         self.source = Request(name)
         return self.source
 
-    def serve(self):
+    def warmup(self):
         for source in self.sources:
-            try:
-                raw_posts = source.list()
-                cooked_posts = self.engine.save_posts(raw_posts)
-            except err:
-                # todo sending error to maintainer
-                print(err)
-                continue
-            for post in cooked_posts:
+            posts = source.list()
+            self.engine.save_posts(posts)
+        print("warmup successfully, please serve now")
+
+    def serve(self):
+        while True:
+            for source in self.sources:
                 try:
-                    cooked_post = self.engine.with_more_infos(post)
-                    Mail(cooked_post).send()
+                    raw_posts = source.list()
+                    cooked_posts = self.engine.save_posts(raw_posts)
                 except err:
-                    # todo sending error to maintainer
-                    print("sending mail failed, post: %s" % post["title"])
+                    # todo mail error to maintainer
+                    print(err)
                     continue
-        print("worker list complete, next will be 60s")
-        time.sleep(60)
+                for post in cooked_posts:
+                    try:
+                        cooked_post = self.engine.with_more_infos(post)
+                        Mail(cooked_post).send()
+                    except err:
+                        # todo mail error to maintainer
+                        print("sending mail failed, post: %s" % post["title"])
+                        continue
+            print("worker list complete, next will be 60s")
+            time.sleep(60)
 
     def send(self):
         post = self.source.get()
