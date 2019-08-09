@@ -55,7 +55,7 @@ class App:
                         print("sending mail failed, post: %s" % post["title"])
                         continue
             print("worker list complete, next will be 60s")
-            time.sleep(60)
+            time.sleep(3600)
 
     def send(self):
         post = self.source.get()

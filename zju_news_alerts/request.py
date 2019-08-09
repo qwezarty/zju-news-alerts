@@ -10,6 +10,7 @@
 """
 
 import requests
+from zju_news_alerts.wrapper import mail_errors
 from zju_news_alerts.sources.physics import Physics
 from zju_news_alerts.sources.grs import GRS
 import zju_news_alerts.helpers as helpers
@@ -50,10 +51,11 @@ class Request:
                 return {}
             source.get_info_qs = get_info_qs
 
+    @mail_errors
     def list(self):
         url = self.source.get_list_url()
         params = self.source.get_list_qs()
-        res = self.session.get(url=url, headers=self.headers, params=params)
+        res = self.session.get(url=url, headers=self.headers, params=params, timeout=30)
         if not res:
             raise Exception("request list gives none response, source: %s" % self.source_name)
         res.encoding = self.source.encoding
@@ -64,10 +66,14 @@ class Request:
         rets.sort(key=lambda x: x["date"], reverse=True)
         return rets
 
+    @mail_errors
     def get(self):
         latest = self.list()[0]
         params = self.source.get_info_qs()
-        res = self.session.get(url=latest["url"], headers=self.headers, params=params)
+        try:
+            res = self.session.get(url=latest["url"], headers=self.headers, params=params, timeout=30)
+        except requests.exceptions.ConnectTimeout as error:
+            raise error
         if not res:
             raise Exception("request detail gives none response, source: %s" % self.source_name)
         res.encoding = self.source.encoding
