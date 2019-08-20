@@ -42,19 +42,20 @@ class App:
                 try:
                     raw_posts = source.list()
                     cooked_posts = self.engine.save_posts(raw_posts)
-                except err:
+                except error:
                     # todo mail error to maintainer
-                    print(err)
+                    print(error)
                     continue
                 for post in cooked_posts:
                     try:
-                        cooked_post = self.engine.with_more_infos(post)
-                        Mail(cooked_post).send()
-                    except err:
+                        post = source.get(post["url"])
+                        post = self.engine.with_more_infos(post)
+                        Mail(post).send()
+                    except:
                         # todo mail error to maintainer
                         print("sending mail failed, post: %s" % post["title"])
                         continue
-            print("worker list complete, next will be 60s")
+            print("worker list complete, next will be 1hr")
             time.sleep(3600)
 
     def send(self):

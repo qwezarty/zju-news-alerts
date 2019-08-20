@@ -67,11 +67,12 @@ class Request:
         return rets
 
     @mail_errors
-    def get(self):
-        latest = self.list()[0]
+    def get(self, url=""):
+        if not url:
+            url = self.list()[0]["url"]
         params = self.source.get_info_qs()
         try:
-            res = self.session.get(url=latest["url"], headers=self.headers, params=params, timeout=30)
+            res = self.session.get(url=url, headers=self.headers, params=params, timeout=30)
         except requests.exceptions.ConnectTimeout as error:
             raise error
         if not res:

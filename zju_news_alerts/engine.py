@@ -63,7 +63,7 @@ class Engine:
             {
                 "_id": "grs",
                 "description": "zju, postgraduate research institute",
-                "subscribers": ["qwezarty@163.com", "qwezarty@gmail.com"]
+                "subscribers": ["qwezarty@163.com"]
             }
         ]
         for source in sources:
